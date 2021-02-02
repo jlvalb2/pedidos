@@ -14,6 +14,26 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+	     'formatter' => [
+			//'locale' => 'cs_CZ',
+			// Only effective when the "PHP intl extension" is installed else "language" above is used:
+			// https://www.php.net/manual/en/book.intl.php
+
+			//'language' => 'cs-CZ',
+			// If not set, "locale" above will be used:
+			// https://www.yiiframework.com/doc/api/2.0/yii-i18n-formatter#$language-detail
+
+			// Following values might be usefull for your situation:
+			'booleanFormat' => ['Não', 'Sim'],
+			'dateFormat' => 'dd-mm-yyyy', // or 'php:Y-m-d'
+			'datetimeFormat' => 'dd-mm-yyyy HH:mm:ss', // or 'php:Y-m-d H:i:s'
+			'decimalSeparator' => ',',
+			'defaultTimeZone' => 'America/Salvador',
+			'thousandSeparator' => '.',
+			'timeFormat' => 'php:H:i:s', //  or HH:mm:ss
+			'currencyCode' => 'R$',
+		   ],
+
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'bITsgfpCNmpL4zSYqavTFofFXofkHiz0',

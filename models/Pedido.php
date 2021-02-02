@@ -15,13 +15,15 @@ use Yii;
  * @property int $status
  * @property string $nomecliente
  * @property string|null $sobrenomecliente
- * @property string|null $CEP
- * @property string $Logradouro
+ * @property int|null $formapgto
+ * @property string $CEP
  * @property string|null $numero
  * @property string|null $complemento
  * @property string|null $referencia
  * @property string|null $obs
  *
+ * @property Logradouro $cEP
+ * @property Meiopgto $formapgto0
  * @property Status $status0
  * @property Pedidopagamentos[] $pedidopagamentos
  * @property Pratospedido[] $pratospedidos
@@ -45,12 +47,15 @@ class Pedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['horaPedido', 'horaEntrega', 'valor', 'nomecliente', 'Logradouro'], 'required'],
+            [['horaPedido', 'horaEntrega', 'valor', 'nomecliente', 'CEP'], 'required'],
             [['horaPedido', 'horaEntrega'], 'safe'],
             [['valor'], 'number'],
-            [['status'], 'integer'],
-            [['entregador', 'nomecliente', 'sobrenomecliente', 'CEP', 'Logradouro', 'numero', 'complemento'], 'string', 'max' => 45],
+            [['status', 'formapgto'], 'integer'],
+            [['entregador', 'nomecliente', 'sobrenomecliente', 'numero', 'complemento'], 'string', 'max' => 45],
+            [['CEP'], 'string', 'max' => 8],
             [['referencia', 'obs'], 'string', 'max' => 128],
+            [['CEP'], 'exist', 'skipOnError' => true, 'targetClass' => Logradouro::className(), 'targetAttribute' => ['CEP' => 'cep']],
+            [['formapgto'], 'exist', 'skipOnError' => true, 'targetClass' => Meiopgto::className(), 'targetAttribute' => ['formapgto' => 'idmeiopgto']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['status' => 'idstatus']],
         ];
     }
@@ -69,13 +74,33 @@ class Pedido extends \yii\db\ActiveRecord
             'status' => 'Status',
             'nomecliente' => 'Nomecliente',
             'sobrenomecliente' => 'Sobrenomecliente',
+            'formapgto' => 'Formapgto',
             'CEP' => 'Cep',
-            'Logradouro' => 'Logradouro',
             'numero' => 'Numero',
             'complemento' => 'Complemento',
             'referencia' => 'Referencia',
             'obs' => 'Obs',
         ];
+    }
+
+    /**
+     * Gets query for [[CEP]].
+     *
+     * @return \yii\db\ActiveQuery|LogradouroQuery
+     */
+    public function getCEP()
+    {
+        return $this->hasOne(Logradouro::className(), ['cep' => 'CEP']);
+    }
+
+    /**
+     * Gets query for [[Formapgto0]].
+     *
+     * @return \yii\db\ActiveQuery|yii\db\ActiveQuery
+     */
+    public function getFormapgto0()
+    {
+        return $this->hasOne(Meiopgto::className(), ['idmeiopgto' => 'formapgto']);
     }
 
     /**
@@ -140,10 +165,10 @@ class Pedido extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return PedidoAQ the active query used by this AR class.
+     * @return LogradouroQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new PedidoAQ(get_called_class());
+        return new LogradouroQuery(get_called_class());
     }
 }
