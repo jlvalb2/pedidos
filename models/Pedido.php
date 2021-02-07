@@ -11,6 +11,7 @@ use Yii;
  * @property string $horaPedido
  * @property string $horaEntrega
  * @property float $valor
+ * @property float $taxaentrega
  * @property string|null $entregador
  * @property int $status
  * @property string $nomecliente
@@ -47,9 +48,9 @@ class Pedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['horaPedido', 'horaEntrega', 'valor', 'nomecliente', 'CEP'], 'required'],
+            [['horaPedido', 'horaEntrega', 'valor', 'taxaentrega', 'nomecliente', 'CEP'], 'required'],
             [['horaPedido', 'horaEntrega'], 'safe'],
-            [['valor'], 'number'],
+            [['valor', 'taxaentrega'], 'number'],
             [['status', 'formapgto'], 'integer'],
             [['entregador', 'nomecliente', 'sobrenomecliente', 'numero', 'complemento'], 'string', 'max' => 45],
             [['CEP'], 'string', 'max' => 8],
@@ -70,6 +71,7 @@ class Pedido extends \yii\db\ActiveRecord
             'horaPedido' => 'Hora Pedido',
             'horaEntrega' => 'Hora Entrega',
             'valor' => 'Valor',
+            'taxaentrega' => 'Taxaentrega',
             'entregador' => 'Entregador',
             'status' => 'Status',
             'nomecliente' => 'Nomecliente',
@@ -165,10 +167,10 @@ class Pedido extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return LogradouroQuery the active query used by this AR class.
+     * @return PedidoQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new LogradouroQuery(get_called_class());
+        return new PedidoQuery(get_called_class());
     }
 }
