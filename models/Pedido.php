@@ -13,6 +13,7 @@ use Yii;
  * @property float $valor
  * @property float $taxaentrega
  * @property string|null $entregador
+ * @property string $recolhedor
  * @property int $status
  * @property string $nomecliente
  * @property string|null $sobrenomecliente
@@ -48,11 +49,11 @@ class Pedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['horaPedido', 'horaEntrega', 'valor', 'taxaentrega', 'nomecliente', 'CEP'], 'required'],
+            [['horaPedido', 'horaEntrega', 'valor', 'taxaentrega', 'recolhedor', 'nomecliente', 'CEP'], 'required'],
             [['horaPedido', 'horaEntrega'], 'safe'],
             [['valor', 'taxaentrega'], 'number'],
             [['status', 'formapgto'], 'integer'],
-            [['entregador', 'nomecliente', 'sobrenomecliente', 'numero', 'complemento'], 'string', 'max' => 45],
+            [['entregador', 'recolhedor', 'nomecliente', 'sobrenomecliente', 'numero', 'complemento'], 'string', 'max' => 45],
             [['CEP'], 'string', 'max' => 8],
             [['referencia', 'obs'], 'string', 'max' => 128],
             [['CEP'], 'exist', 'skipOnError' => true, 'targetClass' => Logradouro::className(), 'targetAttribute' => ['CEP' => 'cep']],
@@ -73,6 +74,7 @@ class Pedido extends \yii\db\ActiveRecord
             'valor' => 'Valor',
             'taxaentrega' => 'Taxaentrega',
             'entregador' => 'Entregador',
+            'recolhedor' => 'Recolhedor',
             'status' => 'Status',
             'nomecliente' => 'Nomecliente',
             'sobrenomecliente' => 'Sobrenomecliente',
